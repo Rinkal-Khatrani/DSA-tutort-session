@@ -17,6 +17,27 @@ const lengthOfLongestSubstring = (s: string): number => {
   return maxLen;
 };
 
+// with map
+function lengthOfLongestSubstringMap(s: string): number {
+  const map = new Map<string, number>(); // char → last seen index
+  let maxLength = 0;
+  let left = 0; // window start
+
+  for (let right = 0; right < s.length; right++) {
+    const char = s[right];
+
+    // if char already in window, move left pointer
+    if (map.has(char) && map.get(char)! >= left) {
+      left = map.get(char)! + 1;
+    }
+
+    map.set(char, right); // update last seen index
+    maxLength = Math.max(maxLength, right - left + 1); // update max
+  }
+
+  return maxLength;
+}
+
 // Tests
 console.log(lengthOfLongestSubstring("abcabcbb")); // 3
 console.log(lengthOfLongestSubstring("bbbbb")); // 1
